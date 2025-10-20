@@ -1,0 +1,53 @@
+# Specifies the version of the Docker Compose file format.
+version: '3.8'
+
+services:
+  # 1. The Redis Service
+  # This is the message broker for the task queue.
+  redis:
+    image: "redis:alpine"
+    container_name: video-redis
+
+  # 2. The FastAPI API Service (Web Server)
+  api:
+    build: .
+    container_name: video-api
+    ports:
+      # Map port 8000 on the host to port 8000 in the container.
+      - "8000:8000"
+    volumes:
+      # Mount local directories from the 'app' subfolder into the container for persistent storage.
+      - ./app/uploads:/code/app/uploads
+      - ./app/results:/code/app/results
+    environment:
+      # Tell the application how to find the Redis container.
+      - REDIS_HOST=redis
+    depends_on:
+      # Ensure Redis is started before the API service.
+      - redis
+
+  # 3. The RQ Worker Service (ML Model Processor)
+  worker:
+    build: .
+    container_name: video-worker
+    command: ["python3", "-m", "app.worker"]
+    # 'environment' is the correct place for these variables
+    environment:
+      - PYTHONPATH=/code
+      - REDIS_HOST=redis
+    volumes:
+      # Mount the same directories so the worker can access/write files.
+      - ./app/uploads:/code/app/uploads
+      - ./app/results:/code/app/results
+      # Point to the 'appuser' home directory, not '/root'
+      - ~/.cache/huggingface:/home/appuser/.cache/huggingface
+    depends_on:
+      - redis
+    deploy:
+      # THIS IS THE KEY PART FOR GPU ACCESS
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

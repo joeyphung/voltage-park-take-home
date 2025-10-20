@@ -1,0 +1,40 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+
+# --- Virtual environments ---
+venv/
+.env/
+.envrc
+*.env
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- Logs and caches ---
+*.log
+*.sqlite3
+*.db
+.cache/
+*.pid
+
+# --- IDE and editor settings ---
+.vscode/
+.idea/
+
+# --- Build and packaging ---
+build/
+dist/
+*.egg-info/
+
+# --- Application specific ---
+# Ignore the requirements file
+app/requirements.txt
+
+# --- Uploads and generated files ---
+uploads/
+results/
