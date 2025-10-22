@@ -29,11 +29,7 @@ Thumbs.db
 # --- Build and packaging ---
 build/
 dist/
-*.egg-info/
-
-# --- Application specific ---
-# Ignore the requirements file
-app/requirements.txt
+*.egg-info
 
 # --- Uploads and generated files ---
 uploads/

@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+aiofiles
+rq
+redis
+pydantic-settings
+prometheus-client
+prometheus-fastapi-instrumentator
+torch
+diffusers
+transformers
+accelerate
+Pillow
+av
