@@ -12,3 +12,6 @@ transformers
 accelerate
 Pillow
 av
+opencv-python
+imageio 
+imageio-ffmpeg
